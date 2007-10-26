@@ -1,0 +1,28 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+xml.kml(:xmlns => "http://earth.google.com/kml/2.1") do	
+  xml.tag! "Document" do
+    xml.name("GEopochi") 
+    @territories.each do |territory,dt_territory|
+      xml.tag! "Folder" do
+        xml.name dt_territory.full_name
+	xml.tag! "Style" do
+          xml.tag! "ListStyle" do
+            xml.listItemType "radioFolder"
+          end
+        end
+        dt_territory.layers.each do |layer,dt_layer|
+          xml.tag! "NetworkLink" do
+            unless dt_layer.default
+              xml.visibility(0)
+            end
+            xml.name dt_layer.full_name
+            xml.tag! "Link" do
+              xml.href(@url_root + "/#{territory}/#{layer}")
+              xml.viewRefreshMode "onRequest"
+            end
+          end
+        end
+      end
+    end
+  end
+end 

@@ -1,0 +1,50 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+xml.kml(:xmlns => "http://earth.google.com/kml/2.1") do
+  xml.tag! "Document" do
+    xml.tag! "Region" do
+      xml.tag! "LatLonAltBox" do
+        xml.west(@extent.top_left.u)
+        xml.north(@extent.top_left.v)
+        xml.east(@extent.bottom_right.u)
+        xml.south(@extent.bottom_right.v)
+      end
+      xml.tag! "Lod" do
+        xml.minLodPixels(@lod[0])
+        xml.maxLodPixels(@lod[-1])
+      end
+    end
+    @sub_tiles.each_with_index do |sub_tile,i| 
+      xml.tag! "NetworkLink" do
+        xml.name(i)
+        xml.tag! "Region" do
+          xml.tag! "LatLonAltBox" do
+            xml.west(sub_tile.extent.top_left.u)
+            xml.north(sub_tile.extent.top_left.v)
+            xml.east(sub_tile.extent.bottom_right.u)
+            xml.south(sub_tile.extent.bottom_right.v)
+          end
+          xml.tag! "Lod" do
+            xml.minLodPixels(sub_tile.min_lod)
+            xml.maxLodPixels(sub_tile.max_lod)
+          end
+        end
+        xml.tag! "Link" do
+          xml.href(sub_tile.url)
+          xml.viewRefreshMode("onRegion")
+        end
+      end
+    end
+    xml.tag! "GroundOverlay" do
+      xml.drawOrder(21)
+      xml.tag! "Icon" do
+        xml.href(@overlay_url)
+      end
+      xml.tag! "LatLonBox" do
+        xml.west(@extent.top_left.u)
+        xml.north(@extent.top_left.v)
+        xml.east(@extent.bottom_right.u)
+        xml.south(@extent.bottom_right.v)
+      end
+    end
+  end
+end

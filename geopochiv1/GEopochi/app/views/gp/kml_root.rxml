@@ -1,0 +1,22 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+xml.kml(:xmlns => "http://earth.google.com/kml/2.1") do
+  xml.tag! "NetworkLink" do
+    xml.name(@name)
+    xml.tag! "Region" do
+      xml.tag! "LatLonAltBox" do
+        xml.west(@extent.top_left.u)
+	xml.north(@extent.top_left.v)
+        xml.east(@extent.bottom_right.u)
+	xml.south(@extent.bottom_right.v)
+      end
+      xml.tag! "Lod" do
+        xml.minLodPixels(0)
+        xml.maxLodPixels(-1)
+      end
+    end
+    xml.tag! "Link" do
+      xml.href(@url_root)
+      xml.viewRefreshMode("onRegion")
+    end
+  end
+end

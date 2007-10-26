@@ -1,0 +1,88 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"iso-8859-1"
+xml.tag!("WMS_Capabilities",:xmlns => "http://www.opengis.net/wms", :version => "1.3.0", "xmlns:xlink" => "http://www.w3.org/1999/xlink", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation" => "http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd") do
+  xml.tag! "Service" do
+    xml.tag!("Name","OGC:WMS")
+    xml.tag!("Title","GEopochi")
+    xml.tag!("Abstract","WMS interface to IGN Géoportail data. Hoyoyo!!")
+    xml.tag!("OnlineResource","xlink:href" => @online_resource, "xlink:type" => "simple")
+    xml.tag!("MaxWidth",2048)
+    xml.tag!("MaxHeight",2048)
+    xml.tag!("LayerLimit",1)
+  end
+  xml.tag!("Capability") do
+    xml.tag!("Request") do
+      xml.tag!("GetCapabilities") do
+        xml.tag!("Format","text/xml")
+        xml.tag!("DCPType") do
+          xml.tag!("HTTP") do
+            ["Get","Post"].each do |req|
+              xml.tag!(req) do
+                xml.tag!("OnlineResource","xlink:href" => @online_resource, "xlink:type" => "simple")
+              end
+            end
+          end
+        end
+      end
+      xml.tag!("GetMap") do
+        @wms_data[:format].each_key do |format|
+          xml.tag!("Format",format)
+        end
+        xml.tag!("DCPType") do
+          xml.tag!("HTTP") do
+            ["Get","Post"].each do |req|
+              xml.tag!(req) do
+                xml.tag!("OnlineResource","xlink:href" => @online_resource, "xlink:type" => "simple")
+              end
+            end
+          end
+        end
+      end
+    end
+    xml.tag!("Exception") do
+      xml.tag!("Format","XML")
+    end
+    xml.tag!("Layer") do
+      xml.tag!("Title","GEopochi")
+      
+      @wms_data[:crs].each_key do |crs|
+        xml.tag!("CRS",crs)
+      end
+      
+      xml.tag!("Attribution") do
+        xml.tag!("Title","IGN")
+        xml.tag!("OnlineResource", "xlink:type" => "simple", "xlink:href" => "http://www.ign.fr/")
+      end
+      #default style for all layers
+      xml.tag!("Style") do
+        xml.tag!("Name","DEFAULT")
+        xml.tag!("Title","Unique style")
+      end
+      @territories.each do |territory,dt_territory|
+        dt_territory.layers.each do |layer,dt_layer|
+          
+          xml.tag!("Layer") do
+            xml.tag!("Name","#{territory}_#{layer}")
+            xml.tag!("Title","#{dt_territory.full_name} (#{dt_layer.full_name})")
+            extent = dt_layer.wgs84_extent
+            xml.tag!("EX_GeographicBoundingBox") do
+              xml.tag!("westBoundLongitude",extent.top_left.u)
+              xml.tag!("eastBoundLongitude",extent.bottom_right.u)
+              xml.tag!("southBoundLatitude",extent.bottom_right.v)
+              xml.tag!("northBoundLatitude",extent.top_left.v)
+            end
+            
+            ["CRS:84","EPSG:4326"].each do |crs|
+              xml.tag!("BoundingBox", 
+                       :CRS => crs, 
+                       :minx => extent.top_left.u, :maxx => extent.bottom_right.u,
+                       :miny => extent.bottom_right.v, :maxy => extent.top_left.v) 
+            end
+          end
+          
+        end
+      end
+      
+    end
+  end
+end
+

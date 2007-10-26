@@ -1,0 +1,38 @@
+==Version 1.2.8
+Don't care about the service parameter of the WMS request.
+
+==Version 1.2.7
+Yes I know. The 1.2.6 was supposed to be the last version, but like a software Rocky Balboa, GEopochi is making a come back. Support for Aerial photography on Saint-Pierre-et-Miquelon + Cadastre on European France.
+
+==Version 1.2.6
+Connects directly to cimg... so no redirection
+
+==Version 1.2.5
+Modified the handling of the 302
+
+==Version 1.2.4
+Cache reactivated for the GE image generation
+
+==Version 1.2.3
+Correct processing of 302 responses
+
+==Version 1.2.2
+Addition of layers for EDR and Topographic (Scan 25 to Scan 100). The Scan layer is now from Scan Departemental to Scan 1000.
+
+==Version 1.2.1
+Some modifications in the Proj.4 Lambert2e string which should solve part of the precision problem in the raster reprojection
+
+==Version 1.2.0
+Simple WMS interface (GetCapabilities + GetMap)
+
+==Version 1.1.1
+Tiles are now downloaded in parrallel so it may be faster
+
+==Version 1.1.0
+Addition of support for Continental France datasets (ortho, scan, street and altitude) + Crozet and Kerguelen
+Some potential speed optimisation (caching the KML files)
+The bug causing the segfault has been squashed
+
+==Version 1.0.1
+Corrects a problem loading the proj.dll library from GDAL on some computers
+Freeze the Rails gems in the GEopochi project
