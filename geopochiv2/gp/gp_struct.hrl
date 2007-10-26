@@ -1,0 +1,3 @@
+-record(terr,{name,layers,ratios,proj}).
+-record(lay,{name,id,x1,y1,x2,y2,x,y,smin,smax,format}).
+-record(proj,{type,params}).
