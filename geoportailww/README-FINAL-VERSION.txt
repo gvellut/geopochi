@@ -1,0 +1,4 @@
+FINAL VERSION / VERSION FINALE
+The IGN keeps changing their geoportail recently. It is not much each time but, still, I am a bit tired of updating the plugins to follow them. So this is the final version as far as I am concerned. In the future, please refrain from contacting me about problems you may have: The source is open anyway... Thanks!
+
+L'IGN change son géoportail assez souvent ces derniers temps. Il n'y a pas grand chose à changer à chaque fois, mais cela devient fatiguant d'updater le plugin à chaque fois. Donc cette version est la dernière que je sortirai. Je ne fixerai ni ne regarderai les problèmes que vous pourriez avoir avec : le code est open source de toute façon... Merci!
